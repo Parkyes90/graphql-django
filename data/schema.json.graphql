@@ -1,0 +1,125 @@
+# This file was generated based on "schema.json". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+"An object with an ID"
+interface Node {
+    "The ID of the object."
+    id: ID!
+}
+
+type DirectorType {
+    id: ID!
+    movies(after: String, before: String, first: Int, last: Int, title: String, title_Icontains: String, title_Istartswith: String, year: Int): MovieNodeConnection!
+    name: String!
+    surname: String!
+}
+
+type MovieCreateMutation {
+    movie: MovieType
+}
+
+type MovieDeleteMutation {
+    movie: MovieType
+}
+
+type MovieNode implements Node {
+    director: DirectorType
+    "The ID of the object."
+    id: ID!
+    title: String!
+    year: Int!
+}
+
+type MovieNodeConnection {
+    "Contains the nodes in this connection."
+    edges: [MovieNodeEdge]!
+    "Pagination data for this connection."
+    pageInfo: PageInfo!
+}
+
+"A Relay edge containing a `MovieNode` and its cursor."
+type MovieNodeEdge {
+    "A cursor for use in pagination"
+    cursor: String!
+    "The item at the end of the edge"
+    node: MovieNode
+}
+
+type MovieType {
+    director: DirectorType
+    id: ID!
+    movieAge: String
+    title: String!
+    year: Int!
+}
+
+type MovieUpdateMutation {
+    movie: MovieType
+}
+
+type MovieUpdateMutationRelayPayload {
+    clientMutationId: String
+    movie: MovieType
+}
+
+type Mutation {
+    createMovie(title: String!, year: Int!): MovieCreateMutation
+    deleteMovie(pk: ID!): MovieDeleteMutation
+    refreshToken(token: String!): Refresh
+    "Obtain JSON Web Token mutation"
+    tokenAuth(password: String!, username: String!): ObtainJSONWebToken
+    updateMovie(pk: ID!, title: String, year: Int): MovieUpdateMutation
+    updateMovieRelay(input: MovieUpdateMutationRelayInput!): MovieUpdateMutationRelayPayload
+    verifyToken(token: String!): Verify
+}
+
+"Obtain JSON Web Token mutation"
+type ObtainJSONWebToken {
+    token: String
+}
+
+"The Relay compliant `PageInfo` type, containing data necessary to paginate this connection."
+type PageInfo {
+    "When paginating forwards, the cursor to continue."
+    endCursor: String
+    "When paginating forwards, are there more items?"
+    hasNextPage: Boolean!
+    "When paginating backwards, are there more items?"
+    hasPreviousPage: Boolean!
+    "When paginating backwards, the cursor to continue."
+    startCursor: String
+}
+
+type Query {
+    allDirectors: [DirectorType]
+    allMovies(after: String, before: String, first: Int, last: Int, title: String, title_Icontains: String, title_Istartswith: String, year: Int): MovieNodeConnection
+    "The ID of the object"
+    movie(id: ID!): MovieNode
+}
+
+type Refresh {
+    payload: GenericScalar
+    token: String
+}
+
+type Verify {
+    payload: GenericScalar
+}
+
+input MovieUpdateMutationRelayInput {
+    clientMutationId: String
+    pk: ID!
+    title: String
+}
+
+
+"""
+The `GenericScalar` scalar type represents a generic
+GraphQL scalar value that could be:
+String, Boolean, Int, Float, List or Object.
+"""
+scalar GenericScalar
